@@ -12,6 +12,7 @@ export class GoogleAddressValidationError extends Error {
   }
 }
 
+// Calls Google Address Validation API for a free-form US address and returns the parsed result.
 export async function validateAddressWithGoogle(
   address: string,
 ): Promise<GoogleValidationResult> {

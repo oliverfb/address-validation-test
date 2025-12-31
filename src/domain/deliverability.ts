@@ -15,11 +15,13 @@ export interface DeliverabilityAssessment {
   dpvFootnotes?: string;
 }
 
+// DPV codes S/D mean secondary info (apt/unit) is missing or required.
 function isMissingSecondary(dpvConfirmation?: string): boolean {
   if (!dpvConfirmation) return false;
   return dpvConfirmation === 'S' || dpvConfirmation === 'D';
 }
 
+// Evaluate USPS-style deliverability from Google validation result and return issues + flags.
 export function assessDeliverability(
   result: GoogleValidationResult,
 ): DeliverabilityAssessment {

@@ -9,6 +9,7 @@ export interface StandardizedAddress {
   zipPlus4?: string;
 }
 
+// Helper to pull a specific component type (e.g., route, street_number) from Google response.
 function findComponent(result: GoogleValidationResult, componentType: string): string | undefined {
   const components = result.address?.addressComponents;
   if (!components) return undefined;
@@ -17,6 +18,7 @@ function findComponent(result: GoogleValidationResult, componentType: string): s
   return match?.componentName?.text;
 }
 
+// Derive street name + suffix, preferring structured component over raw line.
 function deriveStreet(result: GoogleValidationResult): string | undefined {
   const route = findComponent(result, 'route');
   if (route) return route;
@@ -25,6 +27,7 @@ function deriveStreet(result: GoogleValidationResult): string | undefined {
   return addressLine;
 }
 
+// Derive primary number from structured component or first token of the address line.
 function deriveNumber(result: GoogleValidationResult): string | undefined {
   const streetNumber = findComponent(result, 'street_number');
   if (streetNumber) return streetNumber;
@@ -37,6 +40,7 @@ function deriveNumber(result: GoogleValidationResult): string | undefined {
 }
 
 
+// Convert Google validation result into our standardized address shape (number/street/city/state/zip).
 export function standardizeAddress(result: GoogleValidationResult): StandardizedAddress {
   const postal = result.address?.postalAddress;
   const postalCode = postal?.postalCode;

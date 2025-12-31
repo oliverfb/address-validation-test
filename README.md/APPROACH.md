@@ -6,9 +6,13 @@ This project was built with AI-assisted development. Why?
 - Speed up research process on options available for address validation
 - Build a working prototype quickly with whatever options I chose, and discard them quickly if they don't work out
 - Review the generated code and understand challenges and limitations of the options chosen
-- Spend more time on refining the solution
+- Spend more time on refining the solution that works
 
-One of my primary fears with AI-assisted development is not understanding the code and delivering a solution that I do not fully understand. This is basically delivering black box after black box on each deployment if not done properly, which is not sustainable in the long run.
+One of my primary fears with AI-assisted development is delivering code and solutions that I do not fully understand. This is basically delivering black box after black box on each deployment if not done properly, which is not sustainable in the short or long term.
+
+Ths is why, my main policy with AI-assistent development is to always review the generated code, or content in general, to make sure it aligns with the requirements and the problem at hand.
+
+Once a prompt results in a working solution, a git commit is done to avoid future prompts from getting mixed up with the previous ones, reducing the risk of having to start over.
 
 ## Utilized Tools
 
@@ -59,7 +63,7 @@ After obtaining the API key, the API was tested using postman.
 
 6. Refine the solution.
 
-At this point I felt I could simply turn in the MVP and be done with it, but I decided to spend the remaining time to refine the solution. How?
+At this point I felt I could simply turn in the MVP and be done with it, however I decided to spend the remaining time to refine the solution. How?
 
 - Containerize the API using Docker.
 - Propose a simple CI/CD pipeline to deploy the API in AWS.

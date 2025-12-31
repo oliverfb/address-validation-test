@@ -17,6 +17,16 @@ The API:
 4. Assesses the deliverability of the address using the USPS Delivery Point Validation API.
 5. Returns the result to the caller.
 
+## File structure
+- `src/server.ts` – Fastify bootstrap and health check.
+- `src/routes/validateAddress.ts` – `POST /validate-address` endpoint.
+- `src/schemas/validateAddress.ts` – Request validation schema.
+- `src/services/googleAddressValidation.ts` – Google Address Validation API client.
+- `src/services/googleTypes.ts` – Minimal types for Google response.
+- `src/domain/addressStandardizer.ts` – Map Google result to our address shape.
+- `src/domain/deliverability.ts` – DPV-based deliverability rules.
+- `env.example` – Example environment variables.
+
 ## Setup
 1) Install deps: `npm install`
 2) Copy env: `cp env.example .env` and set `GOOGLE_MAPS_API_KEY`

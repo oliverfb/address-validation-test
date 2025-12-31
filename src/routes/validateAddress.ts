@@ -5,6 +5,7 @@ import { standardizeAddress } from '../domain/addressStandardizer.js';
 import { assessDeliverability } from '../domain/deliverability.js';
 
 const validateAddressRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
+  // POST /validate-address: free-form US address -> standardized fields + deliverability verdict.
   app.post('/validate-address', async (request, reply) => {
     const parseResult = validateAddressRequestSchema.safeParse(request.body);
     if (!parseResult.success) {

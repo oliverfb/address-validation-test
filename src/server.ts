@@ -6,6 +6,11 @@ dotenv.config();
 
 const server = fastify({ logger: true });
 
+// Ensure we accept plain text payloads for the free-form address input.
+server.addContentTypeParser('text/plain', { parseAs: 'string' }, (req, body, done) => {
+  done(null, body);
+});
+
 server.register(validateAddressRoutes, { prefix: '/' });
 
 server.get('/health', async () => ({ status: 'ok' }));

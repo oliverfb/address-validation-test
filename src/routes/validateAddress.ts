@@ -15,7 +15,7 @@ const validateAddressRoutes: FastifyPluginAsync = async (app: FastifyInstance) =
       });
     }
 
-    const { address } = parseResult.data;
+    const address = parseResult.data;
 
     try {
       const googleResult = await validateAddressWithGoogle(address);

@@ -25,20 +25,23 @@ The API:
 - `env.example` – Example environment variables.
 
 ## Setup
+
 1) Install deps: `npm install`
 2) Copy env: `cp env.example .env` and set `GOOGLE_MAPS_API_KEY`
 3) Run dev: `npm run dev`
 
+To obtain an Google Maps API Key, please refer to [Set up the Maps JavaScript API](https://developers.google.com/maps/documentation/javascript/get-api-key).
+
 ## Endpoint
 - `POST /validate-address`
-  - Body: `{ "address": "1600 Amphitheatre Pkwy, Mountain View, CA 94043" }`
+  - Body: plain text free-form address (e.g., `1600 Amphitheatre Pkwy, Mountain View, CA 94043`)
   - 200 if deliverable (DPV-confirmed, not missing unit); 422 otherwise.
 
 ### Example `curl`
 ```bash
 curl -X POST http://localhost:3000/validate-address \
-  -H "Content-Type: application/json" \
-  -d '{"address":"1600 Amphitheatre Pkwy, Mountain View, CA 94043"}'
+  -H "Content-Type: text/plain" \
+  --data-raw "1600 Amphitheatre Pkwy, Mountain View, CA 94043"
 ```
 
 ### Response shape (deliverable)
@@ -62,4 +65,3 @@ curl -X POST http://localhost:3000/validate-address \
   "issues": []
 }
 ```
-

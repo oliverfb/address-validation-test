@@ -1,8 +1,5 @@
 import { z } from 'zod';
 
-export const validateAddressRequestSchema = z.object({
-  address: z.string().trim().min(1, 'address is required'),
-});
-
-export type ValidateAddressRequest = z.infer<typeof validateAddressRequestSchema>;
+// Free-form address text (plain text body), trimmed and required.
+export const validateAddressRequestSchema = z.string().trim().min(1, 'address is required');
 

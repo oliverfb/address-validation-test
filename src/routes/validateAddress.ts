@@ -1,8 +1,9 @@
 import { FastifyInstance, FastifyPluginAsync } from 'fastify';
 import { validateAddressRequestSchema } from '../schemas/validateAddress.js';
 import { validateAddressWithGoogle } from '../services/googleAddressValidation.js';
+import { getAddressSuggestions } from '../services/googlePlacesAutocomplete.js';
 import { standardizeAddress } from '../domain/addressStandardizer.js';
-import { assessDeliverability } from '../domain/deliverability.js';
+import { assessDeliverability, DeliverabilityIssue } from '../domain/deliverability.js';
 
 const validateAddressRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
   // POST /validate-address: free-form US address -> standardized fields + deliverability verdict.
@@ -22,9 +23,18 @@ const validateAddressRoutes: FastifyPluginAsync = async (app: FastifyInstance) =
       const standardized = standardizeAddress(googleResult);
       const deliverability = assessDeliverability(googleResult);
 
-      console.log('googleResult', googleResult);
-      console.log('standardized', standardized);
-      console.log('deliverability', deliverability);
+      const knownIssues: DeliverabilityIssue[] = ['INSUFFICIENT_ADDRESS', 'UNCONFIRMED_COMPONENTS', 'DPV_NOT_CONFIRMED'];
+
+      const shouldFetchSuggestions =
+        !deliverability.isDeliverable &&
+        deliverability.issues.some((issue) => knownIssues.includes(issue));
+
+      const suggestions = shouldFetchSuggestions ? await getAddressSuggestions(address) : [];
+
+      console.log('\nGOOGLE RESULT', googleResult);
+      console.log('\nSTANDARDIZED', standardized);
+      console.log('\nDELIVERABILITY', deliverability);
+      console.log('\nSUGGESTIONS', suggestions);
 
       const responsePayload = {
         input: address,
@@ -38,6 +48,7 @@ const validateAddressRoutes: FastifyPluginAsync = async (app: FastifyInstance) =
           missingSecondary: deliverability.missingSecondary,
         },
         issues: deliverability.issues,
+        suggestions,
       };
 
       if (deliverability.isDeliverable) {

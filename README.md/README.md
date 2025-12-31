@@ -27,7 +27,7 @@ The API:
 ## Setup
 
 1) Install deps: `npm install`
-2) Copy env: `cp env.example .env` and set `GOOGLE_MAPS_API_KEY`
+2) Copy env: `cp env.example .env` and set `GOOGLE_MAPS_API_KEY` (must have **Address Validation API** and **Places API** enabled)
 3) Run dev: `npm run dev`
 
 To obtain an Google Maps API Key, please refer to [Set up the Maps JavaScript API](https://developers.google.com/maps/documentation/javascript/get-api-key).
@@ -36,6 +36,7 @@ To obtain an Google Maps API Key, please refer to [Set up the Maps JavaScript AP
 - `POST /validate-address`
   - Body: plain text free-form address (e.g., `1600 Amphitheatre Pkwy, Mountain View, CA 94043`)
   - 200 if deliverable (DPV-confirmed, not missing unit); 422 otherwise.
+  - Always returns `suggestions` (from Places Autocomplete) when the input looks incomplete/typo’d and validation is not fully confirmed.
 
 ### Example `curl`
 ```bash
@@ -62,6 +63,36 @@ curl -X POST http://localhost:3000/validate-address \
     "dpvFootnotes": "AABB",
     "missingSecondary": false
   },
-  "issues": []
+  "issues": [],
+  "suggestions": []
+}
+```
+
+### Response shape (not deliverable, with suggestions)
+```json
+{
+  "input": "...",
+  "isDeliverable": false,
+  "standardized": {
+    "number": "1",
+    "street": "Main St",
+    "city": "Springfield",
+    "state": "IL",
+    "zip": "62701",
+    "zipPlus4": null
+  },
+  "metadata": {
+    "dpvConfirmation": "N",
+    "dpvFootnotes": "AA",
+    "missingSecondary": false
+  },
+  "issues": ["INSUFFICIENT_ADDRESS", "DPV_NOT_CONFIRMED"],
+  "suggestions": [
+    {
+      "description": "123 Main St, Springfield, IL, USA",
+      "placeId": "ChIJd8BlQ2BZwokRAFUEcm_qrcA",
+      "source": "google_places_autocomplete"
+    }
+  ]
 }
 ```

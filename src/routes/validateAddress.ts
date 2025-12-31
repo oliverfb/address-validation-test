@@ -28,6 +28,7 @@ const validateAddressRoutes: FastifyPluginAsync = async (app: FastifyInstance) =
 
       const responsePayload = {
         input: address,
+        formattedAddress: googleResult.address?.formattedAddress,
         isDeliverable: deliverability.isDeliverable,
         standardized,
         metadata: {

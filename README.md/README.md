@@ -3,10 +3,7 @@
 Simple Fastify + TypeScript API exposing `POST /validate-address` for US address validation/standardization using Google Maps Platform Address Validation (USPS DPV-backed).
 
 ## Glossary of Terms
-
-- USPS: United States Postal Service
-- DPV: Delivery Point Validation
-- CASS: Common Address Standardization System
+Please refer to the [GLOSSARY.md](GLOSSARY.md) file for a glossary of terms used in the project.
 
 ## How it works
 

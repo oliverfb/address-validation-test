@@ -30,7 +30,15 @@ The API:
 2) Copy env: `cp env.example .env` and set `GOOGLE_MAPS_API_KEY` (must have **Address Validation API** and **Places API** enabled)
 3) Run dev: `npm run dev`
 
-To obtain an Google Maps API Key, please refer to [Set up the Maps JavaScript API](https://developers.google.com/maps/documentation/javascript/get-api-key).
+To obtain an Google Maps API Key, please refer to [Setting up API keys](https://support.google.com/googleapi/answer/6158862?hl=en).
+You may also refer to [Setting up the Google Maps Platform](https://developers.google.com/maps/documentation/address-validation/get-api-key).
+
+After obtaining the API key, please enable the **Address Validation API** and **Places API** in the Google Cloud Console.
+
+## Third-party APIs
+
+- [Google Address Validation API](https://developers.google.com/maps/documentation/address-validation/overview): validates and standardizes US addresses and returns USPS DPV signals that drive `isDeliverable`, `issues`, and `metadata`.
+- [Google Places API for Autocomplete](https://developers.google.com/maps/documentation/places/web-service): provides address suggestions for incomplete or typo’d input; results are returned in `suggestions` on `/validate-address`.
 
 ## Endpoint
 - `POST /validate-address`

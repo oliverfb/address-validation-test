@@ -1,11 +1,11 @@
 import { GoogleValidationResult } from '../services/googleTypes.js';
 
 export type DeliverabilityIssue =
-  | 'DPV_NOT_CONFIRMED'
-  | 'MISSING_SECONDARY'
-  | 'UNCONFIRMED_COMPONENTS'
-  | 'INSUFFICIENT_ADDRESS'
-  | 'NON_US_ADDRESS';
+  | 'DPV_NOT_CONFIRMED'      // DPV (Delivery Point Validation) could not confirm the address as valid/deliverable
+  | 'MISSING_SECONDARY'      // Address likely requires secondary (apt/unit) information that's missing
+  | 'UNCONFIRMED_COMPONENTS' // Some address components could not be confirmed as valid (e.g., street, city)
+  | 'INSUFFICIENT_ADDRESS'   // Address is incomplete or missing required fields
+  | 'NON_US_ADDRESS';        // Address is not in the United States
 
 export interface DeliverabilityAssessment {
   isDeliverable: boolean;

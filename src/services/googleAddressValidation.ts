@@ -2,7 +2,7 @@ import axios from 'axios';
 import {
   GoogleAddressValidationResponse,
   GoogleValidationResult,
-} from './googleTypes.js';
+} from '../types/googleAddressValidation.js';
 
 const GOOGLE_ENDPOINT = 'https://addressvalidation.googleapis.com/v1:validateAddress';
 

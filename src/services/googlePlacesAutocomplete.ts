@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {
   GooglePlacesAutocompleteResponse,
-} from './googlePlacesTypes.js';
+} from '../types/googlePlaces.js';
 
 const PLACES_AUTOCOMPLETE_ENDPOINT =
   'https://maps.googleapis.com/maps/api/place/autocomplete/json';

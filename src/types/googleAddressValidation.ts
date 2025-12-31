@@ -66,4 +66,3 @@ export interface GoogleMetadata {
   poBox?: boolean;
   residential?: boolean;
 }
-

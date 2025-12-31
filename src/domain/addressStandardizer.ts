@@ -1,4 +1,4 @@
-import { GoogleValidationResult } from '../services/googleTypes.js';
+import { GoogleValidationResult } from '../types/googleAddressValidation.js';
 
 export interface StandardizedAddress {
   number?: string;

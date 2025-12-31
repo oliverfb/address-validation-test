@@ -18,10 +18,9 @@ The API:
 - `src/server.ts` – Fastify bootstrap and health check.
 - `src/routes/validateAddress.ts` – `POST /validate-address` endpoint.
 - `src/schemas/validateAddress.ts` – Request validation schema.
-- `src/services/googleAddressValidation.ts` – Google Address Validation API client.
-- `src/services/googleTypes.ts` – Minimal types for Google response.
-- `src/domain/addressStandardizer.ts` – Map Google result to our address shape.
-- `src/domain/deliverability.ts` – DPV-based deliverability rules.
+- `src/services/*` – Services for the project. Includes clients for Google Address Validation API and Google Places Autocomplete.
+- `src/types/*` – TypeScript types for the project.
+- `src/domain/*` – Domain logic for the project. Includes address standardizer and deliverability assessor.
 - `env.example` – Example environment variables.
 
 ## Setup

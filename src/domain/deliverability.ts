@@ -1,4 +1,4 @@
-import { GoogleValidationResult } from '../services/googleTypes.js';
+import { GoogleValidationResult } from '../types/googleAddressValidation.js';
 
 export type DeliverabilityIssue =
   | 'DPV_NOT_CONFIRMED'      // DPV (Delivery Point Validation) could not confirm the address as valid/deliverable

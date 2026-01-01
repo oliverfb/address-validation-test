@@ -25,7 +25,7 @@ export async function getAddressSuggestions(input: string): Promise<string[]> {
         },
         timeout: 3000,
         headers: {
-          Referer: process.env.VERCEL_URL || '',
+          Referer: process.env.PROJECT_URL || '',
         },
       },
     );

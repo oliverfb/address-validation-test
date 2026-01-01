@@ -2,6 +2,8 @@
 
 Simple Fastify + TypeScript API exposing `POST /validate-address` for US address validation/standardization using Google Maps Platform Address Validation (USPS DPV-backed).
 
+To get an overview of the project approach, please refer to the [docs/APPROACH.md](docs/APPROACH.md) file.
+
 ## Glossary of Terms
 Please refer to the [GLOSSARY.md](GLOSSARY.md) file for a glossary of terms used in the project.
 

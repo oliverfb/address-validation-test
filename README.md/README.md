@@ -7,11 +7,12 @@ Please refer to the [GLOSSARY.md](GLOSSARY.md) file for a glossary of terms used
 
 ## How it works
 
-The API:
+The validate address endpoint works as follows:
 1. Receives a request to validate an address.
 2. Validates the address using the Google Maps Platform Address Validation API.
 3. Standardizes the address using the Common Address Standardization System.
 4. Assesses the deliverability of the address using the USPS Delivery Point Validation API.
+5. If there are issues with the address, it will return suggestions from the Google Places API for Autocomplete.
 5. Returns the result to the caller.
 
 ## File structure
@@ -43,7 +44,7 @@ After obtaining the API key, please enable the **Address Validation API** and **
 - `POST /validate-address`
   - Body: plain text free-form address (e.g., `1600 Amphitheatre Pkwy, Mountain View, CA 94043`)
   - 200 if deliverable (DPV-confirmed, not missing unit); 422 otherwise.
-  - Always returns `suggestions` (from Places Autocomplete) when the input looks incomplete/typo’d and validation is not fully confirmed.
+  - Returns `suggestions` (from Places Autocomplete) when the input looks incomplete/typo’d and validation is not fully confirmed.
 
 ### Example `curl`
 ```bash
@@ -53,6 +54,9 @@ curl -X POST http://localhost:3000/validate-address \
 ```
 
 ### Response shape (deliverable)
+
+Status code: 200
+
 ```json
 {
   "input": "...",
@@ -76,6 +80,9 @@ curl -X POST http://localhost:3000/validate-address \
 ```
 
 ### Response shape (not deliverable, with suggestions)
+
+Status code: 422
+
 ```json
 {
   "input": "...",
@@ -98,11 +105,22 @@ curl -X POST http://localhost:3000/validate-address \
     "DPV_NOT_CONFIRMED: Address could not be fully confirmed; please double-check spelling and ZIP"
   ],
   "suggestions": [
-    {
-      "description": "123 Main St, Springfield, IL, USA",
-      "placeId": "ChIJd8BlQ2BZwokRAFUEcm_qrcA",
-      "source": "google_places_autocomplete"
-    }
+    "1 Main St, Springfield, TN, USA",
+    "Main Street, Springfield, IL, USA",
+    "1 Main St, Springfield, MA, USA",
+    "1 Main St, Waggoner, IL, USA",
+    "South 1st Street, Springfield, IL 62701, USA"
   ]
+}
+```
+
+### Response shape (invalid request)
+
+Status code: 400
+
+```json
+{
+  "error": "INVALID_REQUEST",
+  "message": "address is required"
 }
 ```

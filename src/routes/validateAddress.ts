@@ -1,5 +1,5 @@
 import { FastifyInstance, FastifyPluginAsync } from 'fastify';
-import { validateAddressRequestSchema } from '../schemas/validateAddress.js';
+import { parseAddressRequest } from '../schemas/validateAddress.js';
 import { validateAddressWithGoogle } from '../services/googleAddressValidation.js';
 import { getAddressSuggestions } from '../services/googlePlacesAutocomplete.js';
 import { standardizeAddress } from '../domain/addressStandardizer.js';
@@ -8,15 +8,13 @@ import { assessDeliverability, DeliverabilityIssue } from '../domain/deliverabil
 const validateAddressRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
   // POST /validate-address: free-form US address -> standardized fields + deliverability verdict.
   app.post('/validate-address', async (request, reply) => {
-    const parseResult = validateAddressRequestSchema.safeParse(request.body);
-    if (!parseResult.success) {
+    if (typeof request.body !== 'string' || request.body.trim() === '') {
       return reply.status(400).send({
         error: 'INVALID_REQUEST',
-        message: parseResult.error.errors.map((e) => e.message).join(', '),
+        message: 'address is required',
       });
     }
-
-    const address = parseResult.data;
+    const address = request.body.trim();
 
     try {
       const googleResult = await validateAddressWithGoogle(address);

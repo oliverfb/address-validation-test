@@ -52,11 +52,7 @@ const validateAddressRoutes: FastifyPluginAsync = async (app: FastifyInstance) =
         suggestions,
       };
 
-      if (deliverability.isDeliverable) {
-        return reply.status(200).send(responsePayload);
-      }
-
-      return reply.status(422).send(responsePayload);
+      return reply.status(200).send(responsePayload);
     } catch (err) {
       request.log.error({ err }, 'Address validation failed');
       return reply.status(502).send({

@@ -100,7 +100,7 @@ Status code: 200
 
 ### Response shape (not deliverable, with suggestions)
 
-Status code: 422
+Status code: 200
 
 ```json
 {

@@ -1,13 +1,33 @@
 import fastify from 'fastify';
 import dotenv from 'dotenv';
+import rateLimit from '@fastify/rate-limit';
 import validateAddressRoutes from './routes/validateAddress.js';
 
 dotenv.config();
 
+const {
+  PORT,
+  RATE_LIMIT_ENABLED,
+  RATE_LIMIT_MAX,
+  RATE_LIMIT_WINDOW_MS,
+  X_API_KEY,
+} = process.env;
+
 const server = fastify({ logger: true });
 
-const requiredApiKey = process.env.X_API_KEY;
-if (!requiredApiKey) {
+// Per-IP rate limiting (using @fastify/rate-limit).
+// Disable by setting RATE_LIMIT_ENABLED=false.
+if (RATE_LIMIT_ENABLED === 'true') {
+  server.register(rateLimit, {
+    max: Number(RATE_LIMIT_MAX ?? 60), // Defaults to 60 req/min per IP.
+    timeWindow: Number(RATE_LIMIT_WINDOW_MS ?? 60_000), // Defaults to 1 minute.
+    addHeaders: {
+      'retry-after': true,
+    },
+  });
+}
+
+if (!X_API_KEY) {
   server.log.warn(
     'X_API_KEY is not set; API key auth is disabled (all requests allowed)',
   );
@@ -18,7 +38,7 @@ if (!requiredApiKey) {
 // - Clients must send: X-API-Key: <X_API_KEY>
 // - /health is intentionally left open for basic uptime checks.
 server.addHook('onRequest', async (request, reply) => {
-  if (!requiredApiKey) return;
+  if (!X_API_KEY) return;
 
   const path = (request.raw.url || '').split('?')[0];
   if (path === '/health') return;
@@ -26,7 +46,7 @@ server.addHook('onRequest', async (request, reply) => {
   const headerValue = request.headers['x-api-key'];
   const providedApiKey = Array.isArray(headerValue) ? headerValue[0] : headerValue;
 
-  if (!providedApiKey || providedApiKey !== requiredApiKey) {
+  if (!providedApiKey || providedApiKey !== X_API_KEY) {
     return reply.status(401).send({
       error: 'UNAUTHORIZED',
       message: 'invalid or missing X-API-Key',
@@ -41,9 +61,17 @@ server.addContentTypeParser('text/plain', { parseAs: 'string' }, (req, body, don
 
 server.register(validateAddressRoutes, { prefix: '/' });
 
-server.get('/health', async () => ({ status: 'ok' }));
+server.get(
+  '/health',
+  {
+    config: {
+      rateLimit: false,
+    },
+  },
+  async () => ({ status: 'ok' }),
+);
 
-const port = process.env.PORT ? Number(process.env.PORT) : 3000;
+const port = PORT ? Number(PORT) : 3000;
 
 server
   .listen({ port, host: '0.0.0.0' })

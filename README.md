@@ -32,6 +32,10 @@ The validate address endpoint works as follows:
 2) Copy env: `cp env.example .env` and set:
    - `GOOGLE_MAPS_API_KEY` (must have **Address Validation API** and **Places API** enabled)
    - `X_API_KEY` (optional; when set, clients must send this as `X-API-Key`)
+   - Rate limiting (optional; defaults to 60 req/min per IP):
+     - `RATE_LIMIT_ENABLED=true`
+     - `RATE_LIMIT_MAX=60`
+     - `RATE_LIMIT_WINDOW_MS=60000`
 3) Run dev: `npm run dev`
 
 To obtain an Google Maps API Key, please refer to [Setting up API keys](https://support.google.com/googleapi/answer/6158862?hl=en).

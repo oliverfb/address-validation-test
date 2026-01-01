@@ -32,6 +32,9 @@ export async function validateAddressWithGoogle(
       },
       {
         timeout: 5000,
+        headers: {
+          Referer: process.env.VERCEL_URL || '',
+        },
       },
     );
 

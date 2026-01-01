@@ -29,7 +29,9 @@ The validate address endpoint works as follows:
 ## Setup
 
 1) Install deps: `npm install`
-2) Copy env: `cp env.example .env` and set `GOOGLE_MAPS_API_KEY` (must have **Address Validation API** and **Places API** enabled)
+2) Copy env: `cp env.example .env` and set:
+   - `GOOGLE_MAPS_API_KEY` (must have **Address Validation API** and **Places API** enabled)
+   - `X_API_KEY` (optional; when set, clients must send this as `X-API-Key`)
 3) Run dev: `npm run dev`
 
 To obtain an Google Maps API Key, please refer to [Setting up API keys](https://support.google.com/googleapi/answer/6158862?hl=en).
@@ -41,7 +43,7 @@ After obtaining the API key, please enable the **Address Validation API** and **
 
 Alternatively, the API can be run using Docker.
 
-1) Create env file: `cp env.example .env` (set `GOOGLE_MAPS_API_KEY`)
+1) Create env file: `cp env.example .env` (set `GOOGLE_MAPS_API_KEY` and `X_API_KEY`)
 2) Build and run:
    - `docker compose up --build`
 3) Health check:
@@ -61,6 +63,7 @@ Alternatively, the API can be run using Docker.
 ### Example `curl`
 ```bash
 curl -X POST http://localhost:3000/validate-address \
+  -H "X-API-Key: $X_API_KEY" \
   -H "Content-Type: text/plain" \
   --data-raw "1600 Amphitheatre Pkwy, Mountain View, CA 94043"
 ```

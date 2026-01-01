@@ -7,6 +7,14 @@ export type DeliverabilityIssue =
   | 'INSUFFICIENT_ADDRESS'   // Address is incomplete or missing required fields
   | 'NON_US_ADDRESS';        // Address is not in the United States
 
+export const deliverabilityIssueMessages: Record<DeliverabilityIssue, string> = {
+  DPV_NOT_CONFIRMED: 'Address could not be fully confirmed; please double-check spelling and ZIP',
+  MISSING_SECONDARY: 'Missing apartment/unit/suite number that is required for delivery',
+  UNCONFIRMED_COMPONENTS: 'Some parts of the address could not be confirmed (street, city, or state)',
+  INSUFFICIENT_ADDRESS: 'Address is incomplete or missing required fields',
+  NON_US_ADDRESS: 'Address is outside the United States',
+};
+
 export interface DeliverabilityAssessment {
   isDeliverable: boolean;
   issues: DeliverabilityIssue[];
@@ -62,5 +70,11 @@ export function assessDeliverability(
     dpvConfirmation,
     dpvFootnotes,
   };
+}
+
+// Convert issue codes into readable strings for API responses.
+export function formatDeliverabilityIssues(issues: DeliverabilityIssue[]): string[] {
+  if (issues.length === 0) return [];
+  return issues.map((issue) => `${issue}: ${deliverabilityIssueMessages[issue]}`);
 }
 

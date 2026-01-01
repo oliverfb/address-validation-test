@@ -93,7 +93,10 @@ curl -X POST http://localhost:3000/validate-address \
     "dpvFootnotes": "AA",
     "missingSecondary": false
   },
-  "issues": ["INSUFFICIENT_ADDRESS", "DPV_NOT_CONFIRMED"],
+  "issues": [
+    "INSUFFICIENT_ADDRESS: Address is incomplete or missing required fields",
+    "DPV_NOT_CONFIRMED: Address could not be fully confirmed; please double-check spelling and ZIP"
+  ],
   "suggestions": [
     {
       "description": "123 Main St, Springfield, IL, USA",

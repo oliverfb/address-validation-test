@@ -1,9 +1,12 @@
 import { FastifyInstance, FastifyPluginAsync } from 'fastify';
-import { parseAddressRequest } from '../schemas/validateAddress.js';
 import { validateAddressWithGoogle } from '../services/googleAddressValidation.js';
 import { getAddressSuggestions } from '../services/googlePlacesAutocomplete.js';
 import { standardizeAddress } from '../domain/addressStandardizer.js';
-import { assessDeliverability, DeliverabilityIssue } from '../domain/deliverability.js';
+import {
+  assessDeliverability,
+  DeliverabilityIssue,
+  formatDeliverabilityIssues,
+} from '../domain/deliverability.js';
 
 const validateAddressRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
   // POST /validate-address: free-form US address -> standardized fields + deliverability verdict.
@@ -45,7 +48,7 @@ const validateAddressRoutes: FastifyPluginAsync = async (app: FastifyInstance) =
           dpvFootnotes: deliverability.dpvFootnotes,
           missingSecondary: deliverability.missingSecondary,
         },
-        issues: deliverability.issues,
+        issues: formatDeliverabilityIssues(deliverability.issues),
         suggestions,
       };
 

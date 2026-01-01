@@ -143,3 +143,25 @@ Status code: 400
   "message": "address is required"
 }
 ```
+
+### Response shape (unauthorized)
+
+Status code: 401
+
+```json
+{
+  "error": "UNAUTHORIZED",
+  "message": "invalid or missing X-API-Key"
+}
+```
+
+### Response shape (upstream error)
+
+Status code: 502
+
+```json
+{
+  "error": "UPSTREAM_ERROR",
+  "message": "Unknown error"
+}
+```

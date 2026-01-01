@@ -37,6 +37,16 @@ You may also refer to [Setting up the Google Maps Platform](https://developers.g
 
 After obtaining the API key, please enable the **Address Validation API** and **Places API** in the Google Cloud Console.
 
+### Docker
+
+Alternatively, the API can be run using Docker.
+
+1) Create env file: `cp env.example .env` (set `GOOGLE_MAPS_API_KEY`)
+2) Build and run:
+   - `docker compose up --build`
+3) Health check:
+   - `curl http://localhost:3000/health`
+
 ## Third-party APIs
 
 - [Google Address Validation API](https://developers.google.com/maps/documentation/address-validation/overview): validates and standardizes US addresses and returns USPS DPV signals that drive `isDeliverable`, `issues`, and `metadata`.
